@@ -1,14 +1,18 @@
 import 'package:connection/providers/loginViewModel.dart';
+import 'package:connection/ui/AppConstant.dart';
 import 'package:connection/ui/custom_control.dart';
+import 'package:connection/ui/page_forgot_pass.dart';
 import 'package:connection/ui/page_main.dart';
+import 'package:connection/ui/page_register.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class PageLogin extends StatelessWidget {
   PageLogin({super.key});
+  static String routeName = '/login';
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  
+
   @override
   Widget build(BuildContext context) {
     final viewmodel = Provider.of<LoginViewModel>(context);
@@ -17,106 +21,98 @@ class PageLogin extends StatelessWidget {
       Future.delayed(
         Duration.zero,
         () {
-          Navigator.pop(context);
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (content) => const pageMain(),
-              ));
+          Navigator.popAndPushNamed(context, PageMain.routeName);
         },
       );
     }
 
     return Scaffold(
-        backgroundColor: Colors.grey[300],
+        backgroundColor: AppConstant.mainColor,
         body: SafeArea(
           child: Center(
             child: SingleChildScrollView(
               child: Stack(
                 children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.account_tree,
-                        size: 100,
-                        color: Colors.deepPurple[400],
-                      ),
-                      const Text(
-                        "Xin chào",
-                        style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const AppLogo(),
+                        Text("Welcome", style: AppConstant.textFancyheader),
+
+                        const SizedBox(
+                          height: 20,
                         ),
-                      ),
-                      const Text(
-                        "Chúng tôi rất nhớ bạn!",
-                        style: TextStyle(
-                          fontSize: 25,
+                        // ignore: avoid_unnecessary_containers
+                        CustomTextField(
+                          textController: _emailController,
+                          hintText: 'Username',
+                          obscureText: false,
                         ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      // ignore: avoid_unnecessary_containers
-                      CustomeTextField(
-                        emailController: _emailController,
-                        hintText: 'Username',
-                        obscureText: false,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      CustomeTextField(
-                        emailController: _passwordController,
-                        hintText: 'Password',
-                        obscureText: true,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      viewmodel.status == 2
-                          ? Text(viewmodel.errorMessage, style: const TextStyle(color: Colors.red),)
-                          : const Text(""),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: GestureDetector(
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        CustomTextField(
+                          textController: _passwordController,
+                          hintText: 'Password',
+                          obscureText: true,
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            GestureDetector(
+                              onTap: () => Navigator.of(context).popAndPushNamed(PageForgotPass.routeName),
+                              child: Text(
+                                "Quên mật khẩu?",
+                                style: AppConstant.textLinkDark,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        viewmodel.status == 2
+                            ? Text(
+                                viewmodel.errorMessage,
+                                style: const TextStyle(color: Colors.red),
+                              )
+                            : const Text(""),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        GestureDetector(
                           onTap: () {
                             String username = _emailController.text.trim();
                             String password = _passwordController.text.trim();
                             viewmodel.login(username, password);
                           },
-                          child: const CustomButton(textButton: "Đăng nhập",),
+                          child: const CustomButton(
+                            textButton: "Đăng nhập",
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 10,),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text("Chưa có tài khoản? "),
-                          Text(
-                            "Đăng ký",
-                            style: TextStyle(fontWeight:FontWeight.bold, color: Colors.deepPurple[300]),
-                          )
-                        ],
-                      )
-                    ],
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Chưa có tài khoản? ", style: AppConstant.textLinkDark),
+                            GestureDetector(
+                              onTap: () => Navigator.popAndPushNamed(
+                                  context, PageRegister.routeName),
+                              child:
+                                  Text("Đăng ký", style: AppConstant.textLink),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                   viewmodel.status == 1
-                      ? Container(
-                          height: size.height,
-                          width: size.width,
-                          color: Colors.deepPurple.withOpacity(0.3),
-                          child: const Center(
-                            child: Image(
-                              image: AssetImage('assets/images/Spinner.gif'),
-                              width: 60,
-                            ),
-                          ),
-                        )
+                      ? CustomSpinner(size: size)
                       : Container()
                 ],
               ),
