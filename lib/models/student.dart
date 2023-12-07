@@ -17,7 +17,7 @@ class Student {
         idUser: json['iduser'],
         mssv: json['mssv'],
         idLop: json['idlop'],
-        tenLop: json['tenlop'],
+        tenLop: json['lop'],
         diem: json['diem'],
         duyet: json['duyet']);
   }

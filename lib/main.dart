@@ -1,8 +1,11 @@
+import 'package:connection/models/place.dart';
 import 'package:connection/models/profile.dart';
+import 'package:connection/providers/diaChiModel.dart';
 import 'package:connection/providers/forgotPassViewModel.dart';
 import 'package:connection/providers/loginViewModel.dart';
 import 'package:connection/providers/mainViewModel.dart';
 import 'package:connection/providers/menuBarViewModel.dart';
+import 'package:connection/providers/profileViewModel.dart';
 import 'package:connection/providers/resgisterViewModel.dart';
 import 'package:connection/services/api_services.dart';
 import 'package:connection/ui/AppConstant.dart';
@@ -32,6 +35,10 @@ void main() {
         create: (context) => MainViewModel()),
     ChangeNotifierProvider<MenuBarViewModel>(
         create: (context) => MenuBarViewModel()),
+    ChangeNotifierProvider<ProfileViewModel>(
+        create: (context) => ProfileViewModel()),
+    ChangeNotifierProvider<DiaChiModel>(
+        create: (context) => DiaChiModel()),
   ], child: const MyApp()));
 }
 

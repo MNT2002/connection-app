@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:connection/models/profile.dart';
 import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 
 class ApiService {
   static final ApiService _instance = ApiService._internal();
@@ -17,6 +18,68 @@ class ApiService {
   late Dio _dio;
   void initialize() {
     _dio = Dio(BaseOptions(responseType: ResponseType.json));
+  }
+
+  Future<List<dynamic>?> getListCity() async {
+    Profile profile = Profile();
+    String api_url = "https://chocaycanh.club/api/getjstinh";
+    Map<String, String> headers = {
+      'Content-Type': "application/json; charset=UTF-8",
+      'Authorization': 'Bearer ' + Profile().token,
+      'Accept': 'application/json',
+    };
+    var client = http.Client();
+    try {
+      var response = await client.get(Uri.parse(api_url), headers: headers);
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        return data;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<List<dynamic>?> getListDistrict(int id) async {
+    Profile profile = Profile();
+    String api_url =
+        "https://chocaycanh.club/api/getjshuyen?id=" + id.toString();
+    Map<String, String> headers = {
+      'Content-Type': "application/json; charset=UTF-8",
+      'Authorization': 'Bearer ' + Profile().token,
+      'Accept': 'application/json',
+    };
+    var client = http.Client();
+    try {
+      var response = await client.get(Uri.parse(api_url), headers: headers);
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        return data;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<List<dynamic>?> getListWard(int id) async {
+    Profile profile = Profile();
+    String api_url =
+        "https://chocaycanh.club/api/getjsxa?id=" + id.toString();
+    Map<String, String> headers = {
+      'Content-Type': "application/json; charset=UTF-8",
+      'Authorization': 'Bearer ' + Profile().token,
+      'Accept': 'application/json',
+    };
+    var client = http.Client();
+    try {
+      var response = await client.get(Uri.parse(api_url), headers: headers);
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        return data;
+      }
+    } catch (e) {
+      return null;
+    }
   }
 
   Future<Response?> loginUser(String username, String password) async {
@@ -126,7 +189,7 @@ class ApiService {
     String apiUrl = "https://chocaycanh.club/api/lophoc/dangky";
 
     try {
-      final response = await _dio.patch(apiUrl,
+      final response = await _dio.post(apiUrl,
           options: Options(headers: headers), data: jsonEncode(param));
       if (response.statusCode == 200) {
         print(response);
