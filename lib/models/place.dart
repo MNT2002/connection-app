@@ -25,6 +25,6 @@ class District extends Place {
 class Ward extends Place {
   Ward({required id, required name}) : super(id, name);
   factory Ward.fromJson(Map<String, dynamic> json) {
-    return Ward(id: json['wardCode'], name: ['WardName']);
+    return Ward(id: int.parse(json['WardCode']), name: json['WardName']);
   }
 }

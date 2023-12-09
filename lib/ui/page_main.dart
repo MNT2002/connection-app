@@ -4,6 +4,7 @@ import 'package:connection/models/profile.dart';
 import 'package:connection/providers/mainViewModel.dart';
 import 'package:connection/providers/menuBarViewModel.dart';
 import 'package:connection/ui/AppConstant.dart';
+import 'package:connection/ui/custom_control.dart';
 import 'package:connection/ui/page_dkLop.dart';
 import 'package:connection/ui/page_login.dart';
 import 'package:connection/ui/subPageDiemDanh.dart';
@@ -35,13 +36,13 @@ class PageMain extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final viewModel = Provider.of<MainViewModel>(context);
     Profile profile = Profile();
-    if(profile.token == "") {
+    if (profile.token == "") {
       return PageLogin();
     }
 
-  if(profile.student.mssv == "") {
-    return PageDangKyLop();
-  }
+    if (profile.student.mssv == "") {
+      return PageDangKyLop();
+    }
 
     Widget body = SubPageTinTuc();
     if (viewModel.activeMenu == SubPageProfile.idPage) {
@@ -143,9 +144,8 @@ class MenuItemList extends StatelessWidget {
                 child: SizedBox(
                     height: size.height * 0.16,
                     width: size.height * 0.16,
-                    child: Image(
-                      image: AssetImage('assets/images/IU.jpg'),
-                      fit: BoxFit.cover,
+                    child: CustomeAvatarProfile(
+                      size: size,
                     )),
               ),
             ),
@@ -156,7 +156,9 @@ class MenuItemList extends StatelessWidget {
           width: size.width * 0.65,
           color: AppConstant.mainColor,
         ),
-        SizedBox(height: 15,),
+        SizedBox(
+          height: 15,
+        ),
         SizedBox(
           height: size.height * 0.6,
           width: size.width * 0.65,

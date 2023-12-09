@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:connection/models/profile.dart';
 import 'package:connection/providers/diaChiModel.dart';
 import 'package:connection/providers/mainViewModel.dart';
@@ -5,11 +7,14 @@ import 'package:connection/providers/profileViewModel.dart';
 import 'package:connection/ui/AppConstant.dart';
 import 'package:connection/ui/custom_control.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class SubPageProfile extends StatelessWidget {
-  const SubPageProfile({super.key});
+  SubPageProfile({super.key});
   static int idPage = 1;
+  XFile? image;
 
   Future<void> init(DiaChiModel diaChiModel, ProfileViewModel viewModel) async {
     Profile profile = Profile();
@@ -40,7 +45,7 @@ class SubPageProfile extends StatelessWidget {
               Column(
                 children: [
                   // -- start header --
-                  createHeader(size, profile),
+                  createHeader(size, profile, viewModel),
                   // End header
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -52,9 +57,10 @@ class SubPageProfile extends StatelessWidget {
                             CustomInputTextFormField(
                               title: 'Điện thoại',
                               value: profile.user.phone,
-                              width: size.width * 0.42,
+                              width: size.width * 0.45,
                               callback: (output) {
                                 profile.user.phone = output;
+                                viewModel.setModified();
                                 viewModel.updateScreen();
                               },
                               type: TextInputType.phone,
@@ -67,6 +73,7 @@ class SubPageProfile extends StatelessWidget {
                                 if (AppConstant.isDate(output)) {
                                   profile.user.birthday = output;
                                 }
+                                viewModel.setModified();
                                 viewModel.updateScreen();
                               },
                               type: TextInputType.datetime,
@@ -74,6 +81,7 @@ class SubPageProfile extends StatelessWidget {
                           ],
                         ),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             CustomPlaceDropDown(
                                 width: size.width * 0.45,
@@ -85,11 +93,76 @@ class SubPageProfile extends StatelessWidget {
                                   profile.user.provinceid = outputId;
                                   profile.user.provincename = outputName;
                                   await diaChiModel.setCity(outputId);
+                                  profile.user.districtid = 0;
+                                  profile.user.wardid = 0;
+                                  profile.user.districtname = '';
+                                  profile.user.wardname = '';
+                                  viewModel.setModified();
                                   viewModel.hideSpinner();
                                 }),
-                                list: diaChiModel.listCity)
+                                list: diaChiModel.listCity),
+                            CustomPlaceDropDown(
+                                width: size.width * 0.45,
+                                title: "Quận/Huyện",
+                                valueId: profile.user.districtid,
+                                valueName: profile.user.districtname,
+                                callback: ((outputId, outputName) async {
+                                  viewModel.displaySpinner();
+                                  profile.user.districtid = outputId;
+                                  profile.user.districtname = outputName;
+                                  await diaChiModel.setDistrict(outputId);
+                                  profile.user.wardid = 0;
+                                  profile.user.wardname = '';
+                                  viewModel.setModified();
+                                  viewModel.hideSpinner();
+                                }),
+                                list: diaChiModel.listDistrict),
                           ],
-                        )
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustomPlaceDropDown(
+                                width: size.width * 0.45,
+                                title: "Huyện/Xã",
+                                valueId: profile.user.wardid,
+                                valueName: profile.user.wardname,
+                                callback: ((outputId, outputName) async {
+                                  viewModel.displaySpinner();
+                                  profile.user.wardid = outputId;
+                                  profile.user.wardname = outputName;
+                                  await diaChiModel.setCity(outputId);
+                                  viewModel.setModified();
+                                  viewModel.hideSpinner();
+                                }),
+                                list: diaChiModel.listWard),
+                            CustomInputTextFormField(
+                              title: 'Tên đường/Số nhà',
+                              value: profile.user.address,
+                              width: size.width * 0.45,
+                              callback: (output) {
+                                profile.user.address = output;
+                                viewModel.setModified();
+                                viewModel.updateScreen();
+                              },
+                              type: TextInputType.phone,
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        SizedBox(
+                            height: size.width * 0.3,
+                            width: size.width * 0.3,
+                            child: QrImageView(
+                                data: '{userid:' +
+                                    profile.user.id.toString() +
+                                    '}',
+                                version: QrVersions.auto,
+                                gapless: false,
+                                backgroundColor:
+                                    const Color.fromARGB(255, 216, 222, 227)))
                       ],
                     ),
                   ),
@@ -101,7 +174,8 @@ class SubPageProfile extends StatelessWidget {
     );
   }
 
-  Container createHeader(Size size, Profile profile) {
+  Container createHeader(
+      Size size, Profile profile, ProfileViewModel viewModel) {
     return Container(
       height: size.height * 0.20,
       width: double.infinity,
@@ -126,9 +200,42 @@ class SubPageProfile extends StatelessWidget {
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: CustomeAvatarProfile(size: size),
-                ),
+                    padding: const EdgeInsets.all(8.0),
+                    child: viewModel.updatedavatar == 1 && image != null
+                        ? Stack(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(100),
+                                child: SizedBox(
+                                  height: 100,
+                                  width: 100,
+                                  child: Image.file(File(image!.path),
+                                      fit: BoxFit.fill),
+                                ),
+                              ),
+                              Container(
+                                  width: 100,
+                                  height: 100,
+                                  alignment: Alignment.center,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      viewModel.upLoadAvatar(image!);
+                                    },
+                                    child: Container(
+                                        color:
+                                            Color.fromARGB(255, 216, 222, 227),
+                                        child: Icon(size: 30, Icons.save)),
+                                  ))
+                            ],
+                          )
+                        : GestureDetector(
+                            onTap: () async {
+                              final ImagePicker _picker = ImagePicker();
+                              image = await _picker.pickImage(
+                                  source: ImageSource.gallery);
+                              viewModel.setUpdateAvatar();
+                            },
+                            child: CustomeAvatarProfile(size: size))),
               ],
             ),
             Column(
@@ -178,9 +285,20 @@ class SubPageProfile extends StatelessWidget {
                       style: AppConstant.textLink,
                     )
                   ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: viewModel.modified == 1
+                      ? GestureDetector(
+                          onTap: () {
+                            viewModel.updateProfile();
+                          },
+                          child: Icon(Icons.save,
+                              color: Color.fromARGB(255, 216, 222, 227)))
+                      : Container(),
                 )
               ],
-            )
+            ),
           ]),
     );
   }

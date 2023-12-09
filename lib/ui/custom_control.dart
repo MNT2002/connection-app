@@ -117,7 +117,7 @@ class CustomSpinner extends StatelessWidget {
     return Container(
       height: size.height,
       width: size.width,
-      color:  Color.fromARGB(255, 40, 148, 255).withOpacity(0.3),
+      color: Color.fromARGB(255, 40, 148, 255).withOpacity(0.3),
       child: const Center(
         child: Image(
           image: AssetImage('assets/images/Spinner.gif'),
@@ -127,7 +127,6 @@ class CustomSpinner extends StatelessWidget {
     );
   }
 }
-
 
 class CustomPlaceDropDown extends StatefulWidget {
   const CustomPlaceDropDown({
@@ -165,64 +164,67 @@ class _CustomPlaceDropDownState extends State<CustomPlaceDropDown> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          widget.title,
-          style: AppConstant.textBody,
-        ),
-        status == 0
-            ? GestureDetector(
-                onTap: () {
-                  setState(() {
-                    status = 1;
-                  });
-                },
-                child: Text(
-                  outputName == "" ? "Không có" : outputName,
-                  style: AppConstant.textBodyFocus,
-                ),
-              )
-            : Container(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: AppConstant.secondaryColor),
-                width: widget.width,
-                child: DropdownButton(
-                  value: outputId,
-                  items: widget.list
-                      .map((e) => DropdownMenuItem(
-                            value: e.id,
-                            child: Container(
-                              width: widget.width - 50,
-                              child: Text(
-                                e.name,
-                                overflow: TextOverflow.ellipsis,
-                                style: AppConstant.textLink,
-                              ),
-                            ),
-                          ))
-                      .toList(),
-                  onChanged: (value) {
+    return Container(
+      width: widget.width,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            widget.title,
+            style: AppConstant.textBody,
+          ),
+          status == 0
+              ? GestureDetector(
+                  onTap: () {
                     setState(() {
-                      outputId = value!;
-                      for (var dropItem in widget.list) {
-                        if (dropItem.id == outputId) {
-                          outputName = dropItem.name;
-                          widget.callback(outputId, outputName);
-                          break;
-                        }
-                      }
-                      status = 0;
+                      status = 1;
                     });
                   },
-                )),
-        Divider(
-          thickness: 1,
-        )
-      ],
+                  child: Text(
+                    widget.valueName == "" ? "Không có" : widget.valueName,
+                    style: AppConstant.textBodyFocus,
+                  ),
+                )
+              : Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: AppConstant.secondaryColor),
+                  width: widget.width,
+                  child: DropdownButton(
+                    value: widget.valueId,
+                    items: widget.list
+                        .map((e) => DropdownMenuItem(
+                              value: e.id,
+                              child: Container(
+                                width: widget.width - 50,
+                                child: Text(
+                                  e.name,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: AppConstant.textLink,
+                                ),
+                              ),
+                            ))
+                        .toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        outputId = value!;
+                        for (var dropItem in widget.list) {
+                          if (dropItem.id == outputId) {
+                            outputName = dropItem.name;
+                            widget.callback(outputId, outputName);
+                            break;
+                          }
+                        }
+                        status = 0;
+                      });
+                    },
+                  )),
+          Divider(
+            thickness: 1,
+          )
+        ],
+      ),
     );
   }
 }
@@ -331,7 +333,7 @@ class CustomInputTextFormField extends StatefulWidget {
     required this.width,
     required this.title,
     required this.value,
-    required this.callback, 
+    required this.callback,
     this.type = TextInputType.text,
   });
 

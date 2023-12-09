@@ -33,7 +33,7 @@ class AppConstant {
       var date1 = inputFormat.parseStrict(str);
       return true;
     } catch (e) {
-      print('loi');
+      print('--- Loi ---');
       return false;
     }
   }

@@ -16,8 +16,12 @@ class DiaChiModel with ChangeNotifier {
     curWardId = Wid;
     final repo = PlaceRepository();
     listCity = await repo.getListCity();
-    listDistrict = await repo.getListDistrict(curDistrictId);
-    listWard = await repo.getListWard(curWardId);
+    if (curCityId != 0) {
+      listDistrict = await repo.getListDistrict(curCityId);
+    }
+    if(curDistrictId != 0) {
+    listWard = await repo.getListWard(curDistrictId);
+    }
   }
 
   Future<void> setCity(int Cid) async {
