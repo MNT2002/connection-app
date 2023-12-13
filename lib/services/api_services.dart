@@ -21,6 +21,26 @@ class ApiService {
     _dio = Dio(BaseOptions(responseType: ResponseType.json));
   }
 
+  Future<List<dynamic>?> getCourseList () async {
+    Profile profile = Profile();
+    String api_url = "https://chocaycanh.club/api/hocphan/ds";
+    Map<String, String> headers = {
+      'Content-Type': "application/json; charset=UTF-8",
+      'Authorization': 'Bearer ' + Profile().token,
+      'Accept': 'application/json',
+    };
+    var client = http.Client();
+    try {
+      var response = await client.get(Uri.parse(api_url), headers: headers);
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        return data;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
   Future<void> uploadAvatarToServer (File imageFile) async {
     Profile profile = Profile();
     Map<String, String> headers = {
