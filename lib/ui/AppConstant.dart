@@ -26,6 +26,7 @@ class AppConstant {
   static Color mainColor = const Color.fromARGB(255, 31, 36, 45);
   static Color secondaryColor = const Color.fromARGB(255, 38, 44, 55);
   static Color thirdColor = const Color.fromARGB(255, 40, 148, 255);
+  static Color textColor = const Color.fromARGB(255, 216, 222, 227);
 
   static bool isDate(String str) {
     try {

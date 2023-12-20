@@ -39,7 +39,7 @@ class PageLogin extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const AppLogo(),
-                        Text("Welcome", style: AppConstant.textFancyheader),
+                        Text("Welcome Back", style: AppConstant.textFancyheader),
 
                         const SizedBox(
                           height: 20,

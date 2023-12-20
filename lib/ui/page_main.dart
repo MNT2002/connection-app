@@ -1,6 +1,8 @@
 // ignore: camel_case_types
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:connection/models/profile.dart';
+import 'package:connection/models/student.dart';
+import 'package:connection/models/user.dart';
 import 'package:connection/providers/mainViewModel.dart';
 import 'package:connection/providers/menuBarViewModel.dart';
 import 'package:connection/ui/AppConstant.dart';
@@ -24,10 +26,9 @@ class PageMain extends StatelessWidget {
   final List<String> menuTitles = [
     "Tin tức",
     "Profile",
-    "Điểm danh",
-    "Tìm kiếm",
     "Danh sách lớp",
-    "Danh sách học phần"
+    "Danh sách học phần",
+    "Đăng xuất"
   ];
   final menuBar = MenuItemList();
 
@@ -47,14 +48,15 @@ class PageMain extends StatelessWidget {
     Widget body = SubPageTinTuc();
     if (viewModel.activeMenu == SubPageProfile.idPage) {
       body = SubPageProfile();
-    } else if (viewModel.activeMenu == SubPageDiemDanh.idPage) {
-      body = SubPageDiemDanh();
-    } else if (viewModel.activeMenu == SubPageTimKiem.idPage) {
-      body = SubPageTimKiem();
     } else if (viewModel.activeMenu == SubPageDsLop.idPage) {
       body = SubPageDsLop();
     } else if (viewModel.activeMenu == SubPageDsHocPhan.idPage) {
       body = SubPageDsHocPhan();
+    } else if (viewModel.activeMenu == 4) {
+      // profile.token = "";
+      print('logout');
+      return PageLogin();
+      // Navigator.of(context).popAndPushNamed(PageMain.routeName);
     }
 
     menuBar.initialize(menuTitles);
