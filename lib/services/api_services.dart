@@ -21,6 +21,28 @@ class ApiService {
     _dio = Dio(BaseOptions(responseType: ResponseType.json));
   }
 
+  Future<Response?> getStudentsFromDSLop (int idLopHoc) async {
+    String api_url = "https://chocaycanh.club/api/lophoc/dssinhvien";
+    Map<String, String> headers = {
+      'Content-Type': "application/json; charset=UTF-8",
+      'Authorization': 'Bearer ' + Profile().token,
+      'Accept': 'application/json',
+    };
+     Map<String, dynamic> param = {
+      "idlophoc": idLopHoc
+    };
+    try {
+      final response =
+          await _dio.post(api_url, options: Options(headers: headers), data: jsonEncode(param));
+      if (response.statusCode == 200) {
+        return response;
+      }
+    } catch (e) {
+      print(e);
+    }
+    return null;
+  }
+
   Future<Response?> getCourseList () async {
     Profile profile = Profile();
     String api_url = "https://chocaycanh.club/api/hocphan/ds";

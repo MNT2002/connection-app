@@ -20,7 +20,7 @@ class LoginViewModel with ChangeNotifier {
         status = 2;
         errorMessage = "Tên đăng nhập hoặc mật khẩu không chính xác!";
       } else {
-        // Dang nhap thanh cong, lay thong user student
+        // Dang nhap thanh cong, lay thong tin user student
         var student = await StudentRepository().getStudentInfo();
         profile.student = Student.fromStudent(student);
         var user = await UserRepository().getUserInfo();

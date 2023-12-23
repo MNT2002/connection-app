@@ -1,3 +1,4 @@
+import 'package:connection/models/profile.dart';
 import 'package:flutter/material.dart';
 
 class MainViewModel with ChangeNotifier {
@@ -21,6 +22,11 @@ class MainViewModel with ChangeNotifier {
   void setActiveMenu(int index) {
     activeMenu = index;
     menuStatus = false;
+    notifyListeners();
+  }
+
+  void logOut() {
+    Profile().token = "";
     notifyListeners();
   }
 }

@@ -49,6 +49,7 @@ class SubPageDsHocPhan extends StatelessWidget {
                       itemCount: courses.length,
                       itemBuilder: (context, index) {
                         return Card(
+                          color: AppConstant.thirdColor,
                           elevation: 4.0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
@@ -57,6 +58,7 @@ class SubPageDsHocPhan extends StatelessWidget {
                             title: Text(
                               courses[index].tenhocphan,
                               style: TextStyle(
+                                color: AppConstant.textColor,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16.0,
                               ),
@@ -65,7 +67,6 @@ class SubPageDsHocPhan extends StatelessWidget {
                               'Giảng viên: ${courses[index].tengv}',
                               style: TextStyle(
                                 fontStyle: FontStyle.italic,
-                                color: Colors.grey,
                               ),
                             ),
                           ),

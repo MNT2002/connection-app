@@ -53,10 +53,7 @@ class PageMain extends StatelessWidget {
     } else if (viewModel.activeMenu == SubPageDsHocPhan.idPage) {
       body = SubPageDsHocPhan();
     } else if (viewModel.activeMenu == 4) {
-      // profile.token = "";
-      print('logout');
-      return PageLogin();
-      // Navigator.of(context).popAndPushNamed(PageMain.routeName);
+      MainViewModel().logOut();
     }
 
     menuBar.initialize(menuTitles);

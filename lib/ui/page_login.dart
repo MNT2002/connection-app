@@ -18,6 +18,7 @@ class PageLogin extends StatelessWidget {
     final viewmodel = Provider.of<LoginViewModel>(context);
     final size = MediaQuery.of(context).size;
     if (viewmodel.status == 3) {
+      viewmodel.status = 0;
       Future.delayed(
         Duration.zero,
         () {
