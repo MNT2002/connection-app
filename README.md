@@ -3,14 +3,14 @@
 Conection App.
 
 # Pictures demo
-![image](https://github.com/MNT2002/connection-app/assets/85971758/eed566dc-06de-49f4-9275-e315d99c6027)
-![image](https://github.com/MNT2002/connection-app/assets/85971758/3074d233-10fe-48e7-9b93-0d46de13efee)
-![image](https://github.com/MNT2002/connection-app/assets/85971758/f749a49f-12e0-444b-994e-2ecb87aedd57)
-![image](https://github.com/MNT2002/connection-app/assets/85971758/a80e4760-b8c7-47d4-84a5-ec37b91f4f24)
-![image](https://github.com/MNT2002/connection-app/assets/85971758/ebebbaa6-5f8d-4a19-b5c6-b56c379004eb)
-![image](https://github.com/MNT2002/connection-app/assets/85971758/710aab85-d80e-4f07-976d-12928868e4d7)
-
-![image](https://github.com/MNT2002/connection-app/assets/85971758/399bbd3a-61e9-4505-af4a-53de3cdfb357)
+![image](https://github.com/MNT2002/connection-app/assets/85971758/c5c7f1c7-1983-4a60-9c54-3312a92379e5)
+![image](https://github.com/MNT2002/connection-app/assets/85971758/bef851f0-c5b7-42d8-98c9-f569af445790)
+![image](https://github.com/MNT2002/connection-app/assets/85971758/c244fb9d-36a2-480e-a391-18f51197ac45)
+![image](https://github.com/MNT2002/connection-app/assets/85971758/186facff-7f60-4dc2-b17f-1e9822b474c9)
+![image](https://github.com/MNT2002/connection-app/assets/85971758/89081bfa-7eb4-445f-8eec-7ed041b93f0d)
+![image](https://github.com/MNT2002/connection-app/assets/85971758/f9fbf56f-7518-4a01-881e-924fb0e2f788)
+![image](https://github.com/MNT2002/connection-app/assets/85971758/ae5047c0-6419-409f-ad56-c176029f2186)
+![image](https://github.com/MNT2002/connection-app/assets/85971758/4020f56e-0784-4631-b467-063b1969c8a5)
 
 
 
