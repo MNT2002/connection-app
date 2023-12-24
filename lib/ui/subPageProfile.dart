@@ -36,13 +36,12 @@ class SubPageProfile extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final profile = Profile();
     Future.delayed(Duration.zero, () => init(diaChiModel, viewModel));
-    return GestureDetector(
-      onTap: () => MainViewModel().closeMenu(),
-      child: Container(
-          color: AppConstant.mainColor,
-          child: Stack(
-            children: [
-              Column(
+    return Container(
+        color: AppConstant.mainColor,
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              child: Column(
                 children: [
                   // -- start header --
                   createHeader(size, profile, viewModel),
@@ -168,10 +167,10 @@ class SubPageProfile extends StatelessWidget {
                   ),
                 ],
               ),
-              viewModel.status == 1 ? CustomSpinner(size: size) : Container(),
-            ],
-          )),
-    );
+            ),
+            viewModel.status == 1 ? CustomSpinner(size: size) : Container(),
+          ],
+        ));
   }
 
   Container createHeader(

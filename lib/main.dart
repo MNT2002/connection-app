@@ -12,6 +12,7 @@ import 'package:connection/ui/AppConstant.dart';
 import 'package:connection/ui/page_forgot_pass.dart';
 import 'package:connection/ui/page_login.dart';
 import 'package:connection/ui/page_main.dart';
+import 'package:connection/ui/page_main_customMenuBar.dart';
 import 'package:connection/ui/page_register.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -63,6 +64,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ), 
       home: PageLogin(),
+      // home: PageMainMenuCustom(),
     );
   }
 }

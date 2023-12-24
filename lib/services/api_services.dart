@@ -18,22 +18,22 @@ class ApiService {
   final url_forgot = "https://chocaycanh.club/public/api/password/remind";
   late Dio _dio;
   void initialize() {
-    _dio = Dio(BaseOptions(responseType: ResponseType.json));
+    _dio = Dio(BaseOptions(
+      responseType: ResponseType.json,
+    ));
   }
 
-  Future<Response?> getStudentsFromDSLop (int idLopHoc) async {
+  Future<Response?> getStudentsFromDSLop(int idLopHoc) async {
     String api_url = "https://chocaycanh.club/api/lophoc/dssinhvien";
     Map<String, String> headers = {
       'Content-Type': "application/json; charset=UTF-8",
       'Authorization': 'Bearer ' + Profile().token,
       'Accept': 'application/json',
     };
-     Map<String, dynamic> param = {
-      "idlophoc": idLopHoc
-    };
+    Map<String, dynamic> param = {"idlophoc": idLopHoc};
     try {
-      final response =
-          await _dio.post(api_url, options: Options(headers: headers), data: jsonEncode(param));
+      final response = await _dio.post(api_url,
+          options: Options(headers: headers), data: jsonEncode(param));
       if (response.statusCode == 200) {
         return response;
       }
@@ -43,7 +43,7 @@ class ApiService {
     return null;
   }
 
-  Future<Response?> getCourseList () async {
+  Future<Response?> getCourseList() async {
     Profile profile = Profile();
     String api_url = "https://chocaycanh.club/api/hocphan/ds";
     Map<String, String> headers = {
@@ -55,8 +55,14 @@ class ApiService {
     try {
       final response =
           await _dio.get(api_url, options: Options(headers: headers));
+
       if (response.statusCode == 200) {
         return response;
+      }
+      if (response.statusCode == 429) {
+        // Thử lại sau một khoảng thời gian nào đó (ví dụ: 5 giây)
+        Future.delayed(
+            const Duration(milliseconds: 500), () => getCourseList());
       }
     } catch (e) {
       print(e);
@@ -64,7 +70,7 @@ class ApiService {
     return null;
   }
 
-  Future<void> uploadAvatarToServer (File imageFile) async {
+  Future<void> uploadAvatarToServer(File imageFile) async {
     Profile profile = Profile();
     Map<String, String> headers = {
       'Content-Type': "application/json; charset=UTF-8",
@@ -72,10 +78,10 @@ class ApiService {
       'Accept': 'application/json',
     };
 
-    FormData formData = FormData.fromMap({
-      'file': await MultipartFile.fromFile(imageFile.path)
-    });
-    await _dio.post('https://chocaycanh.club/public/api/me/avatar', data: formData, options: Options(headers: headers));
+    FormData formData = FormData.fromMap(
+        {'file': await MultipartFile.fromFile(imageFile.path)});
+    await _dio.post('https://chocaycanh.club/public/api/me/avatar',
+        data: formData, options: Options(headers: headers));
   }
 
   Future<List<dynamic>?> getListCity() async {
@@ -101,7 +107,7 @@ class ApiService {
   Future<List<dynamic>?> getListDistrict(int id) async {
     Profile profile = Profile();
     String api_url =
-        "https://chocaycanh.club/api/getjshuyen?id="+id.toString();
+        "https://chocaycanh.club/api/getjshuyen?id=" + id.toString();
     Map<String, String> headers = {
       'Content-Type': "application/json; charset=UTF-8",
       'Authorization': 'Bearer ' + Profile().token,
@@ -121,8 +127,7 @@ class ApiService {
 
   Future<List<dynamic>?> getListWard(int id) async {
     Profile profile = Profile();
-    String api_url =
-        "https://chocaycanh.club/api/getjsxa?id="+id.toString();
+    String api_url = "https://chocaycanh.club/api/getjsxa?id=" + id.toString();
     Map<String, String> headers = {
       'Content-Type': "application/json; charset=UTF-8",
       'Authorization': 'Bearer ' + Profile().token,
@@ -199,7 +204,7 @@ class ApiService {
       'Accept': 'application/json',
     };
     String birthday = "";
-    if(profile.user.birthday.isNotEmpty) {
+    if (profile.user.birthday.isNotEmpty) {
       String temp = profile.user.birthday;
       int ti = temp.indexOf('/', 0);
       String subday = temp.substring(0, ti);
@@ -208,7 +213,7 @@ class ApiService {
       String subyear = temp.substring(tm + 1, temp.length);
       birthday = subyear + '-' + submonth + '-' + subday;
     }
-    
+
     Map<String, dynamic> param = {
       "first_name": profile.user.first_name,
       "last_name": '',
@@ -287,6 +292,11 @@ class ApiService {
           await _dio.get(apiUrl, options: Options(headers: headers));
       if (response.statusCode == 200) {
         return response;
+      }
+      if (response.statusCode == 429) {
+        // Thử lại sau một khoảng thời gian nào đó (ví dụ: 5 giây)
+        Future.delayed(
+            const Duration(milliseconds: 500), () => getCourseList());
       }
     } catch (e) {
       print(e);

@@ -19,6 +19,7 @@ class CustomeAvatarProfile extends StatelessWidget {
       child: Container(
         width: 100,
         height: 100,
+        color: AppConstant.thirdColor,
         child: Image.network(
           Profile().user.avatar,
           fit: BoxFit.cover,
@@ -78,13 +79,18 @@ class CustomButton extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-          color: AppConstant.thirdColor,
-          borderRadius: BorderRadius.circular(12)),
+        borderRadius: BorderRadius.circular(12),
+        gradient: const LinearGradient(
+          colors: [Colors.blue, Colors.green], // Màu sắc của linear gradient
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+        ),
+      ),
       child: Center(
           child: Text(
         textButton,
         style: const TextStyle(
-            color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),
+            color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
       )),
     );
   }

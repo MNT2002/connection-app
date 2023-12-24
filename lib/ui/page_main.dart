@@ -12,24 +12,37 @@ import 'package:connection/ui/page_login.dart';
 import 'package:connection/ui/subPageDiemDanh.dart';
 import 'package:connection/ui/subPageDsHocPhan.dart';
 import 'package:connection/ui/subPageDsLop.dart';
+import 'package:connection/ui/subPageMain.dart';
 import 'package:connection/ui/subPageProfile.dart';
+import 'package:connection/ui/subPageSetting.dart';
 import 'package:connection/ui/subPageTimKiem.dart';
-import 'package:connection/ui/subPageTinTuc.dart';
 import 'package:flutter/material.dart';
 import 'package:connection/ui/AppConstant.dart';
 import 'package:provider/provider.dart';
 
 // ignore: camel_case_types
-class PageMain extends StatelessWidget {
+class PageMain extends StatefulWidget {
   PageMain({super.key});
   static String routeName = '/home';
+
+  @override
+  State<PageMain> createState() => _PageMainState();
+}
+
+class _PageMainState extends State<PageMain> {
   final List<String> menuTitles = [
-    "Tin tức",
     "Profile",
     "Danh sách lớp",
     "Danh sách học phần",
     "Đăng xuất"
   ];
+  int currentIndex = 0; // Track the current index for the selected item
+  void _onItemTapped(int index) {
+    setState(() {
+      currentIndex = index;
+    });
+  }
+
   final menuBar = MenuItemList();
 
   @override
@@ -45,15 +58,30 @@ class PageMain extends StatelessWidget {
       return PageDangKyLop();
     }
 
-    Widget body = SubPageTinTuc();
-    if (viewModel.activeMenu == SubPageProfile.idPage) {
-      body = SubPageProfile();
-    } else if (viewModel.activeMenu == SubPageDsLop.idPage) {
-      body = SubPageDsLop();
-    } else if (viewModel.activeMenu == SubPageDsHocPhan.idPage) {
-      body = SubPageDsHocPhan();
-    } else if (viewModel.activeMenu == 4) {
-      MainViewModel().logOut();
+    // Widget body = SubPageMain();
+    // if (viewModel.activeMenu == SubPageProfile.idPage) {
+    //   body = SubPageProfile();
+    // } else if (viewModel.activeMenu == SubPageDsLop.idPage) {
+    //   body = SubPageDsLop();
+    // } else if (viewModel.activeMenu == SubPageDsHocPhan.idPage) {
+    //   body = SubPageDsHocPhan();
+    // } else if (viewModel.activeMenu == 4) {
+    //   MainViewModel().logOut();
+    // }
+    Widget body = SubPageMain();
+    switch (currentIndex) {
+      case 0:
+        body = SubPageMain();
+      case 1:
+        body = SubPageProfile();
+      case 2:
+        body = SubPageDsLop();
+      case 3:
+        body = SubPageDsHocPhan();
+      case 4:
+        body = SubPageSetting();
+      default:
+        return Container();
     }
 
     menuBar.initialize(menuTitles);
@@ -68,6 +96,27 @@ class PageMain extends StatelessWidget {
             color: Colors.white,
           ),
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: currentIndex,
+        onTap: _onItemTapped,
+        unselectedItemColor: AppConstant.textColor,
+        selectedItemColor: Colors.pink,
+        backgroundColor: AppConstant.secondaryColor,
+        type: BottomNavigationBarType.fixed,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.class_rounded), label: 'DS Lớp'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.subject), label: 'DS HP'), // New item
+          BottomNavigationBarItem(
+              icon: Icon(Icons.settings), label: 'Cài Đặt'), // New item
+        ],
       ),
       drawer: const Drawer(
         child: Text('drawer menu'),
@@ -125,54 +174,56 @@ class MenuItemList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Column(
-      children: [
-        SizedBox(
-          height: size.height * 0.2,
-          width: size.width * 0.65,
-          child: Center(
-            child: AvatarGlow(
-              duration: Duration(milliseconds: 2000),
-              repeat: true,
-              showTwoGlows: true,
-              repeatPauseDuration: Duration(milliseconds: 100),
-              endRadius: size.height * 0.3,
-              glowColor: AppConstant.mainColor,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(size.height),
-                child: SizedBox(
-                    height: size.height * 0.16,
-                    width: size.height * 0.16,
-                    child: CustomeAvatarProfile(
-                      size: size,
-                    )),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          SizedBox(
+            height: size.height * 0.2,
+            width: size.width * 0.67,
+            child: Center(
+              child: AvatarGlow(
+                duration: Duration(milliseconds: 2000),
+                repeat: true,
+                showTwoGlows: true,
+                repeatPauseDuration: Duration(milliseconds: 100),
+                endRadius: size.height * 0.3,
+                glowColor: AppConstant.mainColor,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(size.height),
+                  child: SizedBox(
+                      height: size.height * 0.16,
+                      width: size.height * 0.16,
+                      child: CustomeAvatarProfile(
+                        size: size,
+                      )),
+                ),
               ),
             ),
           ),
-        ),
-        Container(
-          height: 2,
-          width: size.width * 0.65,
-          color: AppConstant.mainColor,
-        ),
-        SizedBox(
-          height: 15,
-        ),
-        SizedBox(
-          height: size.height * 0.6,
-          width: size.width * 0.65,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 20),
-            child: ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: menuBarItems.length,
-              itemBuilder: (context, index) {
-                return menuBarItems[index];
-              },
+          Container(
+            height: 2,
+            width: size.width * 0.65,
+            color: AppConstant.mainColor,
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          SizedBox(
+            height: size.height * 0.6,
+            width: size.width * 0.65,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 20),
+              child: ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: menuBarItems.length,
+                itemBuilder: (context, index) {
+                  return menuBarItems[index];
+                },
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -216,7 +267,7 @@ class MenuBarItem extends StatelessWidget {
       child: Container(
         key: containerKey,
         alignment: Alignment.centerLeft,
-        height: 40,
+        height: 60,
         child: Text(
           title,
           style: style,

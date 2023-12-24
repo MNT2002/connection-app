@@ -14,6 +14,7 @@ class UserRepository {
       var json = response.data['data'];
       user = User.fromJson(json);
       
+      //Thay đổi định dạng thành d-m-y
       DateTime date = DateTime.parse(user.birthday);
       String birthdayformat = DateFormat('dd-MM-yyyy').format(date);
       user.birthday = birthdayformat;

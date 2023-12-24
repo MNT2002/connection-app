@@ -16,11 +16,11 @@ class AppConstant {
   );
 
   static TextStyle textLink =
-      const TextStyle(color: Color.fromARGB(255, 40, 148, 255));
+      const TextStyle(color: Colors.green);
   static TextStyle textLinkDark =
       const TextStyle(color: Color.fromARGB(255, 216, 222, 227));
 
-  static TextStyle textBody = const TextStyle(color:  Color.fromARGB(255, 40, 148, 255), fontSize: 16);
+  static TextStyle textBody = const TextStyle(color:  Colors.green, fontSize: 16);
   static TextStyle textBodyFocus = const TextStyle(color: Color.fromARGB(255, 216, 222, 227), fontSize: 18);
 
   static Color mainColor = const Color.fromARGB(255, 31, 36, 45);
